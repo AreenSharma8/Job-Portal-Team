@@ -2,7 +2,7 @@ FROM node:20-alpine
 WORKDIR /app
 COPY package.json ./
 RUN npm install --production
-COPY shared/ ./shared/
-COPY gateway/ ./gateway/
+COPY backend/shared/ ./backend/shared/
+COPY backend/gateway/ ./backend/gateway/
 EXPOSE 5000
-CMD ["node", "gateway/src/server.js"]
+CMD ["node", "backend/gateway/src/server.js"]

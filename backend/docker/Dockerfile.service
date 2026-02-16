@@ -3,7 +3,7 @@ ARG SERVICE_DIR
 WORKDIR /app
 COPY package.json ./
 RUN npm install --production
-COPY shared/ ./shared/
+COPY backend/shared/ ./backend/shared/
 COPY ${SERVICE_DIR}/ ./${SERVICE_DIR}/
 EXPOSE 5001 5002 5003 5004 5005 5006 5007
-CMD ["node", "${SERVICE_DIR}/server.js"]
+CMD ["node", "${SERVICE_DIR}/src/server.js"]

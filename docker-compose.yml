@@ -20,7 +20,7 @@ services:
   gateway:
     build:
       context: .
-      dockerfile: docker/Dockerfile.gateway
+      dockerfile: backend/docker/Dockerfile.gateway
     container_name: jobportal-gateway
     restart: unless-stopped
     ports:
@@ -35,9 +35,9 @@ services:
   auth-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/auth-service
+        SERVICE_DIR: backend/services/auth-service
     container_name: jobportal-auth
     restart: unless-stopped
     ports:
@@ -52,9 +52,9 @@ services:
   user-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/user-service
+        SERVICE_DIR: backend/services/user-service
     container_name: jobportal-user
     restart: unless-stopped
     ports:
@@ -69,9 +69,9 @@ services:
   job-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/job-service
+        SERVICE_DIR: backend/services/job-service
     container_name: jobportal-job
     restart: unless-stopped
     ports:
@@ -86,9 +86,9 @@ services:
   application-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/application-service
+        SERVICE_DIR: backend/services/application-service
     container_name: jobportal-application
     restart: unless-stopped
     ports:
@@ -103,9 +103,9 @@ services:
   search-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/search-service
+        SERVICE_DIR: backend/services/search-service
     container_name: jobportal-search
     restart: unless-stopped
     ports:
@@ -120,9 +120,9 @@ services:
   notification-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/notification-service
+        SERVICE_DIR: backend/services/notification-service
     container_name: jobportal-notification
     restart: unless-stopped
     ports:
@@ -137,9 +137,9 @@ services:
   admin-service:
     build:
       context: .
-      dockerfile: docker/Dockerfile.service
+      dockerfile: backend/docker/Dockerfile.service
       args:
-        SERVICE_DIR: services/admin-service
+        SERVICE_DIR: backend/services/admin-service
     container_name: jobportal-admin
     restart: unless-stopped
     ports:
@@ -154,19 +154,4 @@ services:
   client:
     build:
       context: .
-      dockerfile: docker/Dockerfile.client
-    container_name: jobportal-client
-    restart: unless-stopped
-    ports:
-      - '80:80'
-    depends_on:
-      - gateway
-    networks:
-      - jobportal-network
-
-volumes:
-  mongodb_data:
-
-networks:
-  jobportal-network:
-    driver: bridge
+      dockerfile: backend/docker/Dockerfile.client
