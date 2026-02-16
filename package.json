@@ -1,0 +1,36 @@
+{
+  "name": "jobportal",
+  "version": "1.0.0",
+  "description": "Production-ready Job Portal - MERN Microservices",
+  "private": true,
+  "scripts": {
+    "install:all": "npm run install:gateway && npm run install:services && npm run install:client",
+    "install:gateway": "cd gateway && npm install",
+    "install:services": "cd services/auth-service && npm install && cd ../user-service && npm install && cd ../job-service && npm install && cd ../application-service && npm install && cd ../search-service && npm install && cd ../notification-service && npm install && cd ../admin-service && npm install",
+    "install:client": "cd client && npm install",
+    "dev:gateway": "cd gateway && npm run dev",
+    "dev:auth": "cd services/auth-service && npm run dev",
+    "dev:user": "cd services/user-service && npm run dev",
+    "dev:job": "cd services/job-service && npm run dev",
+    "dev:application": "cd services/application-service && npm run dev",
+    "dev:search": "cd services/search-service && npm run dev",
+    "dev:notification": "cd services/notification-service && npm run dev",
+    "dev:admin": "cd services/admin-service && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\" \"npm run dev:user\" \"npm run dev:job\" \"npm run dev:application\" \"npm run dev:search\" \"npm run dev:notification\" \"npm run dev:admin\" \"npm run dev:client\"",
+    "app": "npm run dev",
+    "start": "npm run dev",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.1"
+  }
+}

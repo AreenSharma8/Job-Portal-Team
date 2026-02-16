@@ -1,0 +1,172 @@
+version: '3.8'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:7
+    container_name: jobportal-mongodb
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-password123}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - jobportal-network
+
+  # API Gateway
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    container_name: jobportal-gateway
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Auth Service
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/auth-service
+    container_name: jobportal-auth
+    restart: unless-stopped
+    ports:
+      - '5001:5001'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # User Service
+  user-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/user-service
+    container_name: jobportal-user
+    restart: unless-stopped
+    ports:
+      - '5002:5002'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Job Service
+  job-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/job-service
+    container_name: jobportal-job
+    restart: unless-stopped
+    ports:
+      - '5003:5003'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Application Service
+  application-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/application-service
+    container_name: jobportal-application
+    restart: unless-stopped
+    ports:
+      - '5004:5004'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Search Service
+  search-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/search-service
+    container_name: jobportal-search
+    restart: unless-stopped
+    ports:
+      - '5005:5005'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/notification-service
+    container_name: jobportal-notification
+    restart: unless-stopped
+    ports:
+      - '5006:5006'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Admin Service
+  admin-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.service
+      args:
+        SERVICE_DIR: services/admin-service
+    container_name: jobportal-admin
+    restart: unless-stopped
+    ports:
+      - '5007:5007'
+    env_file: .env
+    depends_on:
+      - mongodb
+    networks:
+      - jobportal-network
+
+  # Client
+  client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    container_name: jobportal-client
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      - gateway
+    networks:
+      - jobportal-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  jobportal-network:
+    driver: bridge

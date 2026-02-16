@@ -1,0 +1,8 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY package.json ./
+RUN npm install --production
+COPY shared/ ./shared/
+COPY gateway/ ./gateway/
+EXPOSE 5000
+CMD ["node", "gateway/src/server.js"]
